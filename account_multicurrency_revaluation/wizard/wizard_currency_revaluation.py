@@ -454,7 +454,9 @@ class WizardCurrencyrevaluation(orm.TransientModel):
                             _('No opening entries in opening period for this fiscal year %s' %
                               fiscalyear.code))
 
-        period_ids = [p.id for p in fiscalyear.period_ids]
+        acc_period_obj = self.pool.get('account.period')
+        period_ids = acc_period_obj.search(cr, uid, [
+            ('company_id', '=', company.id)], context=context)
         if not period_ids:
             raise osv.except_osv(_('Error!'),
                                  _('No period found for the fiscalyear %s' %
